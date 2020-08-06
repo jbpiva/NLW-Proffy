@@ -32,12 +32,14 @@ export default class ClassesControler {
                 .from('class_schedule')
                 .whereRaw('`class_schedule`.`class_id` = `classes`.`id`')
                 .whereRaw('`class_schedule`.`week_day` = ??', [Number(week_day)])
-                .whereRaw('`class_schedule`.`from` <= ??', [timeInMinutes])
-                .whereRaw('`class_schedule`.`to` > ??', [timeInMinutes])
+                .whereRaw('`class_schedule`.`from` <= ??', [Number(timeInMinutes)])
+                .whereRaw('`class_schedule`.`to` > ??', [Number(timeInMinutes)])
             })
             .where('classes.subject', '=', subject)
-            .join('users', 'classes.user_id', '=', 'user_id')
+            .join('users', 'classes.user_id', '=', 'users.id')
             .select(['classes.*', 'users.*']);
+            
+            
         return response.send(classes);
     }
 
